@@ -5,6 +5,7 @@ const cors = require('cors');
 const connectDB = require('./config/db.js');
 const authRoutes = require('./routes/auth.js');
 const taskRoutes = require('./routes/task.js');
+const adminRoutes = require('./routes/admin.js');
 
 connectDB();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.json({

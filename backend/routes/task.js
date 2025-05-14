@@ -1,33 +1,42 @@
 const express = require('express');
 const Task = require('../models/Task.js');
-const auth = require('../middleware/auth.js');
+const authMiddleware = require('../middleware/auth.js');
 
 const router = express.Router();
 
-// Create task
-router.post('/', auth, async (req, res) => {
-  const task = await Task.create({ ...req.body, createdBy: req.user.id });
+// // Get all users (for assigning tasks)
+// router.get('/', authMiddleware, async (req, res) => {
+//   const users = await User.find({ role: "USER" }, 'name _id role email'); // only return name and _id
+//   res.status(200).send(users);
+// });
+
+// ✅ Create task — only MANAGER or ADMIN can create
+router.post('/', authMiddleware, async (req, res) => {
+  const task = await Task.create({ ...req.body, createdBy: req.user.userId });
   res.status(201).send(task);
 });
 
-// Get tasks
-router.get('/', auth, async (req, res) => {
+// ✅ View tasks — any authenticated user
+router.get('/', authMiddleware, async (req, res) => {
   const tasks = await Task.find({
-    $or: [{ createdBy: req.user.id }, { assignedTo: req.user.id }],
-  }).populate('assignedTo');
+    $or: [{ createdBy: req.user.userId }, { assignedTo: req.user.userId }],
+  })
+    .populate('assignedTo', 'name')
+    .populate('createdBy', 'name');
+
   res.status(200).send(tasks);
 });
 
-// Update
-router.put('/:id', auth, async (req, res) => {
+// ✅ Update task — same logic as before (you'll add role logic inside the handler)
+router.put('/:id', authMiddleware, async (req, res) => {
   const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.status(200).send(task);
 });
 
-// Delete
-router.delete('/:id', auth, async (req, res) => {
+// ✅ Delete task — only MANAGER/ADMIN
+router.delete('/:id', authMiddleware, async (req, res) => {
   const task = await Task.findByIdAndDelete(req.params.id);
-  res.status(200).send(task._id);
+  res.status(200).send(task.title);
 });
 
 module.exports = router;

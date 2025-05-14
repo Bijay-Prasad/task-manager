@@ -4,14 +4,13 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../State/User/Action";
+import { MdErrorOutline } from "react-icons/md";
 
 export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt } = useSelector((state) => state.user);
-  const user = useSelector((state) => state.user);
-  console.log("User:", user);
-  
+  const { jwt, error } = useSelector((state) => state.user);
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,8 +23,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     const loginData = { email, password };
-    console.log(loginData);
-    
+
     e.preventDefault();
     await dispatch(login(loginData));
   };
@@ -34,6 +32,12 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-purple-600 mb-6">Login</h2>
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 flex items-center gap-5">
+            <MdErrorOutline />
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"

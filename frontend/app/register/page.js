@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { register } from '../State/User/Action';
+import { MdErrorOutline } from "react-icons/md";
 
 export default function Register() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt } = useSelector((state) => state.user);
+  const { jwt, user, error } = useSelector((state) => state.user);
+  const userData = useSelector((state) => state.user);
 
   const [form, setForm] = useState({
     name: '',
@@ -16,17 +18,22 @@ export default function Register() {
     password: '',
   });
 
+  console.log("userData:", userData);
+  
+
   useEffect(() => {
-    if (jwt) {
-      router.push('/dashboard');
+    if (user) {
+      router.push('/login');
     }
-  }, [jwt, router]);
+  }, [user, router]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
+    console.log(form);
+    
     e.preventDefault();
     dispatch(register(form));
   };
@@ -35,6 +42,12 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-purple-600 mb-6">Register</h2>
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 flex items-center gap-5">
+            <MdErrorOutline/>
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
