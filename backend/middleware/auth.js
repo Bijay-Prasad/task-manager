@@ -26,7 +26,7 @@ const authMiddleware = async (req, res, next) => {
 
     req.user = decoded;
 
-    console.log("Decoded user in authMiddleware:", req.user);
+    // console.log("Decoded user in authMiddleware:", req.user);
 
     next();
   } catch {

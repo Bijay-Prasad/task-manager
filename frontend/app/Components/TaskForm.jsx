@@ -9,7 +9,7 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } fro
 export default function TaskForm({ onSuccess }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log("User:", user);
+  // console.log("User:", user);
   const { users } = useSelector((state) => state.user);
 
 
@@ -37,7 +37,7 @@ export default function TaskForm({ onSuccess }) {
       assignedTo,
     };
 
-    console.log("Task Data:", payload);
+    // console.log("Task Data:", payload);
     
     await dispatch(createTask(payload));
     dispatch(getTasks());

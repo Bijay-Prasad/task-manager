@@ -21,12 +21,12 @@ export const getAllUsers = () => async dispatch => {
 
     try {
         const { data } = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users`);
-        console.log("data:", data);
+        // console.log("data:", data);
 
         dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
         return data;
     } catch (error) {
-        console.log("error:", error);
+        // console.log("error:", error);
 
         const errorMessage = error.response?.data?.msg || "Something went wrong";
         dispatch({ type: GET_ALL_USERS_FAILURE, payload: errorMessage });
@@ -44,7 +44,7 @@ export const updateUserRole = (id, updateRole) => async dispatch => {
 
         dispatch({ type: GET_ALL_USERS_SUCCESS });
     } catch (error) {
-        console.log("error:", error);
+        // console.log("error:", error);
 
         const errorMessage = error.response?.data?.msg || "Something went wrong";
         dispatch({ type: GET_ALL_USERS_FAILURE, payload: errorMessage });
@@ -61,7 +61,7 @@ export const deleteUser = (id) => async dispatch => {
 
         dispatch({ type: DELETE_USER_SUCCESS });
     } catch (error) {
-        console.log("error:", error);
+        // console.log("error:", error);
 
         const errorMessage = error.response?.data?.msg || "Something went wrong";
         dispatch({ type: DELETE_USER_FAILURE, payload: errorMessage });

@@ -18,7 +18,7 @@ export default function Register() {
     password: '',
   });
 
-  console.log("userData:", userData);
+  // console.log("userData:", userData);
   
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Register() {
   };
 
   const handleSubmit = (e) => {
-    console.log(form);
+    // console.log(form);
     
     e.preventDefault();
     dispatch(register(form));

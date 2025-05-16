@@ -31,11 +31,11 @@ export const register = (registerData) => async dispatch => {
     dispatch({ type: REGISTER_REQUEST })
     try {
         const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, registerData);
-        console.log("data:", data);
+        // console.log("data:", data);
 
         dispatch({ type: REGISTER_SUCCESS, payload: data });
     } catch (error) {
-        console.log("error:", error);
+        // console.log("error:", error);
 
         const errorMessage = error.response?.data?.msg || "Something went wrong";
         dispatch({ type: REGISTER_FAILURE, payload: errorMessage });
@@ -54,12 +54,12 @@ export const getAllUsers = () => async dispatch => {
 
     try {
         const { data } = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/users`);
-        console.log("data:", data);
+        // console.log("data:", data);
 
         dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
         return data;
     } catch (error) {
-        console.log("error:", error);
+        // console.log("error:", error);
 
         const errorMessage = error.response?.data?.msg || "Something went wrong";
         dispatch({ type: GET_ALL_USERS_FAILURE, payload: errorMessage });
