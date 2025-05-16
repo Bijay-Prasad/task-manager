@@ -7,18 +7,19 @@ import TaskTable from "../Components/admin/TaskTable";
 import UserTable from "../Components/admin/UserTable";
 
 export default function AdminDashboard() {
-  const { user } = useSelector((state) => state.user);
+  const { user, jwt } = useSelector((state) => state.user);
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("tasks");
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
+    if (!jwt) {
+      router.push('/login');
+    } else {
+      if (user?.role !== "ADMIN") {
+        router.push("/unauthorized");
+      }
     }
-    else if( user?.role !== "ADMIN"){
-      router.push("/unauthorized");
-    }
-  }, [user]);
+  }, [user, jwt, router]);
 
   if (!user || user.role !== "ADMIN") return null;
 

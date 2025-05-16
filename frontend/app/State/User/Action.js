@@ -33,7 +33,7 @@ export const register = (registerData) => async dispatch => {
         const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, registerData);
         // console.log("data:", data);
 
-        dispatch({ type: REGISTER_SUCCESS, payload: data });
+        dispatch({ type: REGISTER_SUCCESS });
     } catch (error) {
         // console.log("error:", error);
 

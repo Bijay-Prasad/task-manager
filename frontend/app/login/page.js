@@ -5,36 +5,52 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../State/User/Action";
 import { MdErrorOutline } from "react-icons/md";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user, jwt, error, loading } = useSelector((state) => state.user);
+  const reduxUser = useSelector((state) => state.user);
+  // console.log("Redux-User:", reduxUser);
 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (user && user.role === "ADMIN") {
-      router.push('/admin');
-    }
-    else if (user) {
-      router.push('/');
+    if (jwt) {
+      if (user?.role === "ADMIN") {
+        router.push('/admin')
+      }
+      else {
+        router.push('/');
+      }
     }
   }, [jwt, router, user]);
 
   const handleSubmit = async (e) => {
     const loginData = { email, password };
-
     e.preventDefault();
-    await dispatch(login(loginData));
+
+    try {
+      await dispatch(login(loginData));
+      toast.success("User logged in successfully!");
+      // if (user?.role === "ADMIN") {
+      //   router.push('/admin')
+      // }
+      // else {
+      //   router.push('/');
+      // }
+    } catch {
+      toast.error("Log in failed!");
+    }
   };
 
 
   if (jwt) return <div>Redirecting...</div>;
 
-  if(loading) return <div>loading...</div>;
+  if (loading) return <div>loading...</div>;
 
   // if(error) return <div>{error}</div>;
 

@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { register } from '../State/User/Action';
 import { MdErrorOutline } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { jwt, user, error, loading } = useSelector((state) => state.user);
-  const userData = useSelector((state) => state.user);
+  const reduxUser = useSelector((state) => state.user);
+  // console.log("Redux-User:", reduxUser);
 
   const [form, setForm] = useState({
     name: '',
@@ -19,32 +21,34 @@ export default function Register() {
   });
 
   // console.log("userData:", userData);
-  
+
 
   useEffect(() => {
-    if (user && user.role === "ADMIN") {
-      router.push('/admin');
-    }
-    else if(user){
+    if (jwt) {
       router.push('/');
     }
-  }, [user, router]);
+  }, [jwt, router]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    // console.log(form);
-    
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    dispatch(register(form));
+    
+    try {
+      await dispatch(register(form));
+      toast.success("User registered successfully!");
+      router.push('/login')
+    } catch {
+      toast.error("Registration failed!");
+    }
   };
 
 
   if (jwt) return <div>Redirecting...</div>;
 
-  if(loading) return <div>loading...</div>;
+  if (loading) return <div>loading...</div>;
 
   // if(error) return <div>{error}</div>;
 
@@ -54,7 +58,7 @@ export default function Register() {
         <h2 className="text-2xl font-bold text-center text-purple-600 mb-6">Register</h2>
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded mb-4 flex items-center gap-5">
-            <MdErrorOutline/>
+            <MdErrorOutline />
             {error}
           </div>
         )}
