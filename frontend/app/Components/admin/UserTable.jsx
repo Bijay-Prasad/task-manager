@@ -9,7 +9,7 @@ export default function UserTable() {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.adminUser);
   const { user } = useSelector((state) => state.user);
-  console.log("User:", user);
+  // console.log("User:", user);
   
   
 

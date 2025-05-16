@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdminSidebar from "../Components/admin/AdminSidebar";
-import TaskTable from "../components/admin/TaskTable";
-import UserTable from "../components/admin/UserTable";
+import TaskTable from "../Components/admin/TaskTable";
+import UserTable from "../Components/admin/UserTable";
 
 export default function AdminDashboard() {
   const { user } = useSelector((state) => state.user);
