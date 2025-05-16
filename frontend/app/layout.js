@@ -1,4 +1,6 @@
 "use client";
+const dotenv = require('dotenv');
+dotenv.config();
 
 import { Provider } from "react-redux";
 import store, { persistor } from "./State/store";

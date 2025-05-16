@@ -68,7 +68,7 @@ export default function TaskTable() {
     currentPage * TASKS_PER_PAGE
   );
 
-  console.log("paginatedTasks", paginatedTasks);
+  // console.log("paginatedTasks", paginatedTasks);
 
 
   const handlePageChange = (page) => {
