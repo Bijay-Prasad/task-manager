@@ -9,7 +9,7 @@ import { MdErrorOutline } from "react-icons/md";
 export default function Register() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt, user, error } = useSelector((state) => state.user);
+  const { jwt, user, error, loading } = useSelector((state) => state.user);
   const userData = useSelector((state) => state.user);
 
   const [form, setForm] = useState({
@@ -22,8 +22,11 @@ export default function Register() {
   
 
   useEffect(() => {
-    if (user) {
-      router.push('/login');
+    if (user && user.role === "ADMIN") {
+      router.push('/admin');
+    }
+    else if(user){
+      router.push('/');
     }
   }, [user, router]);
 
@@ -37,6 +40,13 @@ export default function Register() {
     e.preventDefault();
     dispatch(register(form));
   };
+
+
+  if (jwt) return <div>Redirecting...</div>;
+
+  if(loading) return <div>loading...</div>;
+
+  // if(error) return <div>{error}</div>;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">

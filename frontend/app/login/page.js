@@ -9,17 +9,20 @@ import { MdErrorOutline } from "react-icons/md";
 export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { jwt, error } = useSelector((state) => state.user);
+  const { user, jwt, error, loading } = useSelector((state) => state.user);
 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (jwt) {
+    if (user && user.role === "ADMIN") {
+      router.push('/admin');
+    }
+    else if (user) {
       router.push('/');
     }
-  }, [jwt, router]);
+  }, [jwt, router, user]);
 
   const handleSubmit = async (e) => {
     const loginData = { email, password };
@@ -27,6 +30,13 @@ export default function Login() {
     e.preventDefault();
     await dispatch(login(loginData));
   };
+
+
+  if (jwt) return <div>Redirecting...</div>;
+
+  if(loading) return <div>loading...</div>;
+
+  // if(error) return <div>{error}</div>;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">

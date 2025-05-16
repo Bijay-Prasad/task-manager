@@ -1,13 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getAllUsers, deleteUser, updateUserRole } from "../../State/User/Action";
 import { toast } from "react-toastify";
+import { deleteUser, getAllUsers, updateUserRole } from "@/app/State/Admin/User/Action";
 
 const USERS_PER_PAGE = 6;
 
 export default function UserTable() {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.user);
+  const { users } = useSelector((state) => state.adminUser);
+  const { user } = useSelector((state) => state.user);
+  console.log("User:", user);
+  
+  
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,10 +21,11 @@ export default function UserTable() {
   }, [dispatch]);
 
   const handleRoleChange = async (id, role) => {
+    const updateData = {
+      role,
+    }
     try {
-      console.log("id:", id, "role:", role);
-      
-      await dispatch(updateUserRole(id, role));
+      await dispatch(updateUserRole(id, updateData));
       toast.success("Role updated!");
       dispatch(getAllUsers());
     } catch {
@@ -30,8 +35,6 @@ export default function UserTable() {
 
   const handleDelete = async (id) => {
     try {
-      console.log("id:", id);
-      
       await dispatch(deleteUser(id));
       toast.success("User deleted!");
       dispatch(getAllUsers());
@@ -40,13 +43,13 @@ export default function UserTable() {
     }
   };
 
-  const filteredUsers = users.filter((user) =>
+  const filteredUsers = users?.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
-  const paginatedUsers = filteredUsers.slice(
+  const totalPages = Math.ceil(filteredUsers?.length / USERS_PER_PAGE);
+  const paginatedUsers = filteredUsers?.slice(
     (currentPage - 1) * USERS_PER_PAGE,
     currentPage * USERS_PER_PAGE
   );
@@ -83,7 +86,7 @@ export default function UserTable() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
-            {paginatedUsers.map((u) => (
+            {paginatedUsers?.map((u) => (
               <tr key={u._id} className="hover:bg-gray-50 transition">
                 <td className="px-6 py-4">{u.name}</td>
                 <td className="px-6 py-4">{u.email}</td>
@@ -91,6 +94,7 @@ export default function UserTable() {
                   <select
                     value={u.role}
                     onChange={(e) => handleRoleChange(u._id, e.target.value)}
+                    // disabled={user && user._id === u._id}
                     className="bg-gray-100 text-sm rounded px-2 py-1 border border-gray-300 shadow-sm"
                   >
                     <option value="USER">USER</option>
@@ -101,14 +105,14 @@ export default function UserTable() {
                 <td className="px-6 py-4">
                   <button
                     onClick={() => handleDelete(u._id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 text-sm rounded"
+                    className="bg-red-600 hover:bg-red-700 cursor-pointer text-white px-3 py-1.5 text-sm rounded"
                   >
                     Delete
                   </button>
                 </td>
               </tr>
             ))}
-            {paginatedUsers.length === 0 && (
+            {paginatedUsers?.length === 0 && (
               <tr>
                 <td colSpan="4" className="text-center py-4 text-gray-500 text-sm">
                   No users found.

@@ -20,6 +20,8 @@ import storage from "redux-persist/lib/storage"; // ✅ Uses localStorage
 
 import userReducer from "./User/Reducer";
 import taskReducer from "./Task/Reducer";
+import adminUserReducer from "./Admin/User/Reducer";
+
 
 // ✅ Persist config
 const persistConfig = {
@@ -32,6 +34,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   tasks: taskReducer,
+  adminUser: adminUserReducer,
 });
 
 // ✅ Persisted reducer

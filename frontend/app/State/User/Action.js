@@ -1,5 +1,4 @@
 "use client";
-
 import axios from 'axios';
 import { GET_ALL_USERS_FAILURE, GET_ALL_USERS_REQUEST, GET_ALL_USERS_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, STORE_JWT } from './ActionType';
 import { createApiInstance } from '@/app/config/apiConfig';
@@ -54,7 +53,7 @@ export const getAllUsers = () => async dispatch => {
     dispatch({ type: GET_ALL_USERS_REQUEST });
 
     try {
-        const { data } = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users`);
+        const { data } = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/users`);
         console.log("data:", data);
 
         dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });

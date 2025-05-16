@@ -1,14 +1,15 @@
 const express = require('express');
 const Task = require('../models/Task.js');
 const authMiddleware = require('../middleware/auth.js');
+const User = require('../models/User.js');
 
 const router = express.Router();
 
 // // Get all users (for assigning tasks)
-// router.get('/', authMiddleware, async (req, res) => {
-//   const users = await User.find({ role: "USER" }, 'name _id role email'); // only return name and _id
-//   res.status(200).send(users);
-// });
+router.get('/users', authMiddleware, async (req, res) => {
+  const users = await User.find({ role: "USER" }, 'name _id role email'); // only return name and _id
+  res.status(200).send(users);
+});
 
 // ✅ Create task — only MANAGER or ADMIN can create
 router.post('/', authMiddleware, async (req, res) => {

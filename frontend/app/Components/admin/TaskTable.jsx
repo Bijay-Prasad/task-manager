@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks, deleteTask } from "../../State/Task/Action";
+import { deleteTask } from "../../State/Task/Action";
 import { toast } from "react-toastify";
 import EditTaskModal from "../EditTaskModal";
+import { getAllTasks } from "@/app/State/Admin/User/Action";
 
 
 const formatDate = (dateString) => {
@@ -17,7 +18,7 @@ const TASKS_PER_PAGE = 6;
 
 export default function TaskTable() {
   const dispatch = useDispatch();
-  const { tasks } = useSelector((state) => state.tasks);
+  const { tasks } = useSelector((state) => state.adminUser);
   const { user } = useSelector((state) => state.user);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,14 +30,14 @@ export default function TaskTable() {
   const [selectedTask, setSelectedTask] = useState(null);
 
   useEffect(() => {
-    dispatch(getTasks());
+    dispatch(getAllTasks());
   }, [dispatch]);
 
   const handleDelete = async (taskId) => {
     try {
       await dispatch(deleteTask(taskId));
       toast.success("Task deleted successfully!");
-      dispatch(getTasks());
+      dispatch(getAllTasks());
     } catch (err) {
       toast.error("Failed to delete task.");
     }

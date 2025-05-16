@@ -126,7 +126,7 @@ export default function TaskForm({ onSuccess }) {
             <MenuItem value="">None</MenuItem>
             {users?.map((user) => (
               <MenuItem key={user._id} value={user._id}>
-                {user.name} ({user.role})
+                {user.name}
               </MenuItem>
             ))}
           </Select>
